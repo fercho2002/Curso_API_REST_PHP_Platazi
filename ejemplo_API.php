@@ -48,11 +48,27 @@
             }
             break;
         case 'PUT';
+        //validamos que ese id esra el el array books para saber cual modificar 
+            if(!empty($idTraeGet) && array_key_exists($idTraeGet,$libros)){
+                // tomamos los datos que vamos a modificar ya teniendo el id de el objeto que se va a modificar 
+                $json = file_get_contents('php://input');
+                $libros[$idTraeGet] = json_decode($json,true);
+                //codificamos en formato json y devuelvo toda la colecion completa 
+                echo json_encode($libros);
+            }
             break;
         case 'POST';
-        echo "post no esta programado perroo ";
+            $json = file_get_contents('php://input');
+            $libros[] = json_decode($json,true);
+            echo json_encode($libros);
             break;
         case 'DELETE';
+        //aqur validamos que el id que viene por la url exista en el array por q ese es el que vamos a eliminar 
+            if(!empty($idTraeGet)&& array_key_exists($idTraeGet,$libros)){
+                //con esta funcion se elimina esa key con su informacion de el array
+                unset($libros[$idTraeGet]);
+                echo json_encode($libros);
+            }
             break;
     }
 ?>

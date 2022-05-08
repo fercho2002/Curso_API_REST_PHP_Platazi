@@ -1,0 +1,28 @@
+
+---------- para subir al servidor localhost, este me sirve en ubunuto y en git bash pero en git absh es un poco raro ------------------------
+// este sirve para subir el API a mi localHost
+php -S localHost:8000 Principal.php
+
+
+
+----------- estos son para hacer las consultas y no se por q pero solo me sirve en git-Bash, en ubunuto no ------------
+
+// con este simplemente ennvio por la url la key de el array que quiero que me traiga y el me lo trae por que cuando no se especifica el 'METHOD_REQUEST' el automaticamente toma como si fuera un GET . 
+curl http://localhost:8000/books/1
+
+// este es igual que el anterior pero solo me trae la respuesta no muestra nada de tiempos ni nada de eso 
+curl -s http://localhost:8000/books/1 
+
+// este es igual que los anteriores pero si tenemos instaldo el comando jq me trae la respuesta en un formato de json que se ve mas bonito jaja 
+curl  http://localhost:8000/books/1 | jq
+
+
+
+// con este eliminamos algo de el array ya que por la url pasamos el id de lo que vamos a eliminar.
+curl -X 'DELETE' localhost:8000/books/1
+
+//con este editamos el array que tiene la llave 1 que es la que paso por la url y este combia los valores por los que yo le envio por el json
+curl -X 'PUT' http://localhost:8000/autor/1 -d "{"titulo":"cien  soledad","id_autor":1,"id_genero":1}"
+
+//con este insterto atravez de el metodo post el json que yo mando y no se por q automaticamente el json que yo mande toma el array como una key consecutiva en este caso la que sigue deria 3 
+curl -X 'POST' http://localhost:8000/books -d '{"titulo":"Harry Poter La Piedra Filosofal","id_autor":1,"id_genero":1}'
