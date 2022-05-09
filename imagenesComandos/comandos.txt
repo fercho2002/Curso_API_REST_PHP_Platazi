@@ -16,6 +16,8 @@ curl -s http://localhost:8000/books/1
 // este es igual que los anteriores pero si tenemos instaldo el comando jq me trae la respuesta en un formato de json que se ve mas bonito jaja 
 curl  http://localhost:8000/books/1 | jq
 
+// con este hago el tipico Get peor ya enviando un usuario y una contraseña en la url y si alguno esta mal de una el programa cierra y no trae nada 
+curl -s http://fercho:123@localhost:8000/books/1
 
 
 // con este eliminamos algo de el array ya que por la url pasamos el id de lo que vamos a eliminar.
