@@ -3,6 +3,8 @@
 // este sirve para subir el API a mi localHost
 php -S localHost:8000 Principal.php
 
+// cuando tengo un index.html no es necesario especificar que archivo subir el sube la carpeta y cuando la abra el automaticament se va por el index.html
+php -S localhost:8000
 
 
 ----------- estos son para hacer las consultas y no se por q pero solo me sirve en git-Bash, en ubunuto no ------------

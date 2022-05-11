@@ -1,6 +1,11 @@
 <?php
-    $matches = [];
+    $matches = $_GET = [];
+    // con esto lo que hago es que si la direccion es /index.html o / sola o no hay nada muestre los contendidos de index.html
+    if(in_array($_SERVER["REQUEST_URI"],['/index.html','/',''])){
+        echo file_get_contents('index.html');
+    }
 
+    /*
     // con esta linea de codigo lo que hago es validar el usuario y lacontrasela husrdandolo el las varibles user y psw 
 
     $user = array_key_exists('PHP_AUTH_USER',$_SERVER) ? $_SERVER['PHP_AUTH_USER'] : '';
@@ -8,8 +13,8 @@
     // aqui miro si eso usuarios que captuere son los que pueden acceder y si no pues cierra el flujo jaja 
     if($user != "fercho" || $psw != "123" ){
         die;
-    }
-
+    }*/
+    
 /* con el sigiente if lo que estamos haciendo es perguntar si en la url hay 2 /  /
 entinces si hay dos el matches captura una por una en su array siendo [1] el valor que esta entre las dos 
 primeros /valor/

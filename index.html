@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- buststrap css -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>Libros</title>
+</head>
+<body>
+    <table id="tablaLibros" class="table">
+        <thead>
+            <tr>
+                <th scope="col">Titulo</th>
+                <th scope="col">IdLibro</th>
+                <th scope="col">IdGenero</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+        <button type="button" class="btn btn-primary" value="Cargar Libros" id="cargarBooks">Cargar Libros</button>
+        <div style="display:none;" id="mensajes" >
+            <p>
+
+            </p>
+        </div>
+        <div style="display:none;" id="insertarLibro">
+            <br>
+            <table>
+                <tr>
+                    <td>Titulo: </td>
+                    <td><input type="text" id="inputTitulo"></td>
+                </tr>
+                <tr>
+                    <td>Id Autor: </td>
+                    <td><input type="text" id="inputIdAutor"></td>
+                </tr>
+                <tr>
+                    <td>Id Genero: </td>
+                    <td><input type="text" id="inputIdGenero"></td>
+                </tr>
+                <tr>
+                    <td><input aria-colspan="4" type="button" value="ingresar" id="insertar"></td>
+                </tr>
+            </table>
+        </div>
+    </table>    
+</body>
+<!-- con este script lo pongo para poder usar jqry -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<!-- esta siguiente linea de codifo "<script type="text/javascript">" es importante por q de lo contrario no va a reconecer el java script y nada va a funcionar -->
+<script type="text/javascript">
+// con el signo $('') detro de eso pongo el id de el objeto html que quiero modificar esa es laterminologia para usar jqery 
+// en esta siguiente linea de codigo lo que le estoy diciendo es que cuando el obgeto que tiene el id que esta destro de $('') hagan clic ejecuta la funcion con todo el codigo que tenga adentro hay mismo 
+    $('#cargarBooks').click(function(){
+        // aqui le estoy diciendo que de el id mensajes la primera etiqueta que sea p le va a ponder el mensaje que yo especifique y eso se va a mostrar en el navegador en ese objeto 
+        $('#mensajes').first('p').text('cargando libros ...');
+        // ese div  yo lo denia asi style="display:none;" entonces eso en el navegador no se ve lo que ago con el .show es que al div con el id especificado si se muestre en el navegador 
+        $('#mensajes').show();
+        // con $.ajax aqui es donde yo pongo lo que voy a consultar y como el navegador toma automaticamente com metod request un 'GET' entonces lo que va a hacer es traerme el json que especificamos. 
+        $.ajax(
+            
+            {
+                'url': 'http://localhost:8000/books',
+                // este dataType es muy importante por q si no lo pongo el toma lo que llega como un gran string entonces no lo puedo recorrer por las claves de el json si no que el for lo recorreria letra por letra y asi no sirve por eso se pone el type:json 
+                dataType:'json',
+                
+                // esto quiere decir que si pudo hacer una consulta sobre la url anterior  y en la variable data me guarda lo que la API responda 
+                'success': function(data){
+                    // con el idetificador.hide oculto ese div entonces ya no se veria lo de cargando libros pero si falla algo se sale de esta funcion y va a quedar en el navegador ese mensaje de cargnado libros
+                    $('#mensajes').hide();
+                    // con esta siguiente linea lo que le digo es que a la tabla con el identificador #tablelibros en la etiqueta tbody limpiela, con eso si tuviera la tabla contenida los borra peor  no limpia los titulos jaja 
+                    $("#tablaLibros > tbody").empty();
+                    //con este for recorro cuantos json me trajo la  y luego llamo a la fucion laddLibros para agragarlos 
+                    //console.log(data);
+                    for(a in data){
+                        addLibro(data[a]);
+                        console.log(data[a]);
+                    }
+
+                    /*
+                    esto es en caso de que no ponga el dataType:'json' en la parte de arriva pues con esto lo que hago es parsear la variable data para q la tome com json y jay si poder buscar los campos por las claves de ese json. si no la parseo lo que pasa es que toma todo como un string 
+                    var esto = $.parseJSON(data);
+                    for(b in esto){
+                        addLibro(esto[b]);
+                        console.log(esto[b]);
+                    }*/
+                    $('#insertarLibro').show();
+
+                }
+            }
+        );
+    });
+    //declaro la fucion addLibro para insertar los datos a la tabla #tablaLibros
+    function addLibro(book){
+        //aqui lo que hago es recivir book que viene siendo un json con clave valor pero solo uno y pasa varias veces dependiendo los libros que tenga 
+        // con el tr:last quiere decir que de la tabla selecciona el ultimo tr que viene siendo como una dila de la trabla y con el .after agrega el siguiete html y ya entre comillas puedo usar las variables de aqui de jqery como es el book.titulo hace referencia al valor de la key titulo de ese json que me tra 
+        
+        $('#tablaLibros tr:last').after('<tr><td>'+book.titulo+'</td><td>'+book.id_autor+'</td><td>'+book.id_genero+'</td></tr>');
+    }
+    $('#insertar').click(function(){
+        // aqui lo que hago es que creo el json que voy a enviar, el $('#inputTitulo').val(), quiere decir que en ese campo con ese id y el .val() es para capturar lo que tenga 
+        var entrega = {
+            'titulo' : $('#inputTitulo').val(),
+            'id_autor' : $('#inputIdAutor').val(),
+            'id_genero' : $('#inputIdGenero').val(),
+        };
+        //esotos mensajes los explique mas arriva 
+        $('#mensajes').first('p').text('guardando libro  ...');
+        $('#mensajes').show();
+        // con esto "$.ajax({ });" lo uso para hacer la consulata a la api 
+        $.ajax({
+            //la url a la que voy a enviar el json 
+            'url' : 'http:localhost:8000/books',
+            // method 'POST' para enviar en la otra no escribi nada por que por defecto toma GET
+            'method' : 'POST',
+            // con esto convierto un json a estring y lo envio asi como un string 
+            'data' : JSON.stringify(entrega),
+            // lo que va dentro de el succes se ejecuta  en caso de que todo salgo bien 
+            'success' : function(data){
+                $('#mensajes').hide();
+                // llamo a esa funcion y le envio eso que es un json 
+                addLibro(entrega);
+            }
+        });
+        
+
+    });
+</script>
+</html>

@@ -14,8 +14,8 @@
     $libros = [
         1=> [
             'titulo' => 'cien anos de soledad ',
-            'id_autor' => 1,
-            'id_genero' => 1,
+            'id_autor' => 3,
+            'id_genero' =>4,
         ],
         2=> [
             'titulo' => 'El coronel no tiene quien le escriba',
@@ -40,7 +40,7 @@
     switch (strtoupper($_SERVER['REQUEST_METHOD'])){
         case 'GET':
             if(empty($idTraeGet)){
-                echo "por favor especifique que libro quiere poniendo el la url lo siguien /books/idlibro";
+                echo json_encode($libros);
             }else{
                 if(array_key_exists($idTraeGet,$libros)){
                     echo json_encode($libros[$idTraeGet]);
